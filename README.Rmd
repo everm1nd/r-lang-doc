@@ -1,0 +1,16 @@
+R Lang Cheat Sheet
+==================
+
+### Variables & Expressions
+
+Notice, that in R it's better to use `<-` for variable assignment
+```
+x <- 2
+y <- 3
+x + y == 5
+```
+
+There is also an alias for `TRUE`
+```
+y > x == T
+```

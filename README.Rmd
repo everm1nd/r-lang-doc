@@ -3,14 +3,271 @@ R Lang Cheat Sheet
 
 ### Variables & Expressions
 
-Notice, that in R it's better to use `<-` for variable assignment
+Notice, that in R it's better to use `<-` as assignment operator
 ```
 x <- 2
 y <- 3
-x + y == 5
 ```
 
 There is also an alias for `TRUE`
 ```
 y > x == T
+```
+
+### Vectors
+
+One of the basic types in are is vector.
+You can call `c` function to create vector of objects:
+```
+x <- c(1,2,3)
+x <- c(TRUE, FALSE)
+x <- c(T,F,F,T,T)
+x <- c("a","b","c")
+x <- 5:10 # vector of numbers from 5 to 10
+```
+
+All objects in vector should be same type. If you will add objects of different
+types in vector, R will convert all objects to one type:
+```
+x <- c("a",2) # "a" "2"
+x <- c(0, TRUE) # 0 1
+```
+
+You can convert types explicitly using `as.*` functions:
+```
+x <- 10
+class(x) # integer
+as.character(x) # "x"
+as.logical(x)   # TRUE
+```
+
+In R, if you doing something strange, you can get `NA` value. For example:
+```
+x <- c("a","b","c")
+as.numeric(x) # NA NA NA
+```
+
+### Lists
+
+Objects of different types can be saved in `List`:
+```
+> x <- list("a",10,T)
+> x
+[[1]]
+[1] "a"
+
+[[2]]
+[1] 10
+
+[[3]]
+[1] TRUE
+```
+
+### Matrices
+You can create `Matrix` in R:
+```
+> m <- matrix(1,3,5)
+> m
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    1    1    1    1
+[2,]    1    1    1    1    1
+[3,]    1    1    1    1    1
+```
+
+You can initialize matrix with NA values
+```
+> m <- matrix(nrow=2, ncol=3)
+> m
+     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA
+```
+
+To get dimensions of matrix you can use `dim()` function.
+
+Also you can fill matrix with sequence:
+```
+> m <- matrix(1:8,2,4)
+> m
+     [,1] [,2] [,3] [,4]
+[1,]    1    3    5    7
+[2,]    2    4    6    8
+```
+
+### Factors
+```
+> x <- factor(c('male','female','female','male','male'))
+> x
+[1] male   female female male   male  
+Levels: female male
+```
+
+### Data Frames
+Data frames is something like named matrix:
+```
+> x <- data.frame(names = c('John', 'Peter', 'Sally'), age = 25:27)
+> x
+  names age
+1  John  25
+2 Peter  26
+3 Sally  27
+```
+### Names
+```
+> x <- 1:3
+> names(x)
+NULL
+> names(x) <- c("foo", "bar", "norf")
+> x
+foo bar norf
+ 1 2 3
+> names(x)
+[1] "foo" "bar" "norf"
+```
+
+### Subsettings in R (Basic)
+```
+> x <- c("a","b","c","d","e")
+> x
+[1] "a" "b" "c" "d" "e"
+> x[1]
+[1] "a"
+> x[1:3]
+[1] "a" "b" "c"
+> x[x > "a"]
+[1] "b" "c" "d" "e"
+# and this is really crazy
+> y <- x > "a"
+> y
+[1] FALSE  TRUE  TRUE  TRUE  TRUE
+> x[y]
+[1] "b" "c" "d" "e"
+```
+
+### Subsetting lists:
+```
+> x <- list(foo = 1:4, bar = 0.6)
+> x[1]
+$foo
+[1] 1 2 3 4
+> x[[1]]
+[1] 1 2 3 4
+> x$bar
+[1] 0.6
+> x[["bar"]]
+[1] 0.6
+> x["bar"]
+$bar
+[1] 0.6
+```
+
+But you should notice that for lists the `[[` operator can be used with computed
+indices, while `$` can only be used with literal names.
+```
+> x <- list(foo = 1:4, bar = 0.6, baz = "hello")
+> name <- "foo"
+> x[[name]] ## computed index for ‘foo’
+[1] 1 2 3 4
+> x$name ## element ‘name’ doesn’t exist!
+NULL
+> x$foo
+[1] 1 2 3 4 ## element ‘foo’ does exist
+```
+
+### Subsetting matrix
+You can get an element of matrix:
+```
+> x <- matrix(1:6, 2, 3)
+> x[1, 2]
+[1] 3
+> x[2, 1]
+[1] 2
+```
+
+You can also get row or column doing this:
+```
+> x[1, ]
+[1] 1 3 5
+> x[, 2]
+[1] 3 4
+```
+
+### Partial Matching
+Oh, shit. Be careful with this. It's absolutely crazy thing.
+```
+> x <- list(aardvark = 1:5)
+> x$a
+[1] 1 2 3 4 5
+> x[["a"]]
+NULL
+> x[["a", exact = FALSE]]
+[1] 1 2 3 4 5
+```
+
+Why the fuck they just don't use a tab autocomletion in CLI?!?!
+
+### Vectorized operations
+And of course don't forget about it. It's very useful:
+```
+> x <- 1:4; y <- 6:9
+> x + y
+[1] 7 9 11 13
+> x > 2
+[1] FALSE FALSE TRUE TRUE
+> x >= 2
+[1] FALSE TRUE TRUE TRUE
+> y == 8
+[1] FALSE FALSE TRUE FALSE
+> x * y
+[1] 6 14 24 36
+> x / y
+[1] 0.1666667 0.2857143 0.3750000 0.4444444
+```
+
+You can do the same with matrices. + matrix multiplication!
+```
+> x %*% y ## true matrix multiplication
+ [,1] [,2]
+[1,] 40 40
+[2,] 60 60
+```
+
+### Loops
+```
+for(i in 1:10) {
+ print(i)
+}
+x <- c("a", "b", "c", "d")
+for(letter in x) {
+ print(letter)
+}
+```
+
+### Functions
+```
+summy <-function(x,y) {
+  x + y
+}
+```
+
+You can set default values doing this:
+```
+f <- function(a, b = 1, c = 2, d = NULL) {}
+```
+
+### Apply functions
+You can use an apply function to replace loop iteration with map-like
+expressions. `lapply` is for lists. `apply` is mostly for matrices:
+```
+> x <- matrix(rnorm(200), 20, 10)
+> apply(x, 2, mean) # iterate by columns
+> apply(x, 1, sum) # iterate by rows
+```
+
+You can also use a shortcuts for `apply`:
+```
+rowSums(x) # apply(x, 1, sum)
+rowMeans(x) # apply(x, 1, mean)
+colSums(x) # apply(x, 2, sum)
+colMeans(x) # apply(x, 2, mean)
 ```

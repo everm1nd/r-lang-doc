@@ -291,3 +291,9 @@ rowMeans(x) # apply(x, 1, mean)
 colSums(x) # apply(x, 2, sum)
 colMeans(x) # apply(x, 2, mean)
 ```
+
+### Expressions (Lambda-functions)
+
+```
+f = { a <- 10; b <- 5; a + b } # 15
+```

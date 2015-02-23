@@ -1,6 +1,26 @@
 R Lang Cheat Sheet
 ==================
 
+### Packages
+
+Install package:
+
+```
+install.packages('ggplot2')
+```
+
+or specify lib dir:
+
+```
+install.packages("ggplot2", lib="/data/Rpackages/")
+```
+
+Require package:
+
+```
+library(ggplot2)
+```
+
 ### Variables & Expressions
 
 Notice, that in R it's better to use `<-` as assignment operator

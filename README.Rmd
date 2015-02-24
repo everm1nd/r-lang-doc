@@ -376,3 +376,22 @@ Also data table have an indexes. So called keys:
 ```
 setkey(DT, x) # will create index for x column
 ```
+
+And joins (don't forget to set key before):
+```
+setkey(DT1, x)
+setkey(DT2, x)
+merge(DT1, DT2)
+```
+
+You can order a dataset:
+```
+X[order(X$column1, X$column2),] # order by column1, then by column2
+```
+
+### Ordering with Plyr
+```
+library(plyr)
+arrange(X,column1)
+arrange(Y,desc(column2))
+```

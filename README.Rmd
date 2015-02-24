@@ -327,7 +327,7 @@ DT[x>0]
 DT[c(2,3)] # returns 2,3 rows
 ```
 
-Also you can subset rows:
+Also you can subset columns:
 ```
 DT[,list(mean(x),sum(z))]
 ```

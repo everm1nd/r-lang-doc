@@ -384,12 +384,35 @@ setkey(DT2, x)
 merge(DT1, DT2)
 ```
 
-You can order a dataset:
+### Subsetting (again)
+
+Rows and columns:
+```
+studens[,"name"] # select data from name column
+studens[1:5,"name"] # first 5 records in this column
+```
+
+Logical operations:
+```
+cars[(cars$year < 1975 & cars$horsePower > 200),] # let's find muscle cars
+cars[(cars$year > 2010 | cars$price < 3000),] # logic with OR
+```
+
+Dealing with NA:
+```
+X[which(X$var2 > 8),] # which returns indexes of rows pass this condition,
+                      # and X is subsetted by this indexes. If you have NA in
+                      # X$var2 they will be dropped
+```
+
+### Ordering
+
+Basic ordering:
 ```
 X[order(X$column1, X$column2),] # order by column1, then by column2
 ```
 
-### Ordering with Plyr
+Ordering with Plyr:
 ```
 library(plyr)
 arrange(X,column1)

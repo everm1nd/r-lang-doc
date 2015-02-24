@@ -297,3 +297,82 @@ colMeans(x) # apply(x, 2, mean)
 ```
 f = { a <- 10; b <- 5; a + b } # 15
 ```
+
+### Data Tables
+
+Data Tables are Data Frames on steroids. It's written in C, so it's fuckin
+fast, low memory and so on.
+
+In order to use a data table we should require it's library (ensure that
+required package is installed):
+
+```
+library(data.table)
+```
+
+Data table creation synthax is pretty same as data.frame creation:
+
+```
+DT = data.table(x=rnorm(9),y=rep(c("a","b","c"),each=3),z=rnorm(9))
+```
+
+You can check resources usage for your tables with `tables()` function.
+
+You can subset row:
+
+```
+DT[2,]
+DT[DT$y=="a"]
+DT[x>0]
+DT[c(2,3)] # returns 2,3 rows
+```
+
+Also you can subset rows:
+```
+DT[,list(mean(x),sum(z))]
+```
+
+Add new column:
+
+```
+DT[,w:=z^2]
+```
+
+In this case data.table saves you tons of memory, because unlike data.frame it
+don't copy table to add a column. But be careful:
+
+```
+DT2 <- DT
+DT[,y:=2]
+```
+
+In this case `DT2[y]` will also be equal 2, because data.table is not copied.
+You should explicitly duplicate your data using `copy` function.
+
+Also you can use a lambda-expressions for column creation:
+```
+DT[,m:= { s <- (x+z); log2(s+5) }]
+```
+
+You can perform plyr-like operations:
+```
+DT[,a:=x>0] # you'll get binary values TRUE, FALSE in column `a`
+```
+
+Now you can use values in this column to group rows:
+```
+DT[,b:= mean(x+w),by=a] # calculate mean, grouping columns by `a` value
+```
+
+Special varibales in data.table:
+
+`.N` variable is something like `COUNT()` in SQL:
+```
+DT <- data.table(x=sample(letters[1:3], 1E5, TRUE))
+DT[, .N, by=x] # we'll get number of rows grouped by x
+```
+
+Also data table have an indexes. So called keys:
+```
+setkey(DT, x) # will create index for x column
+```

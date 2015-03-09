@@ -418,3 +418,28 @@ library(plyr)
 arrange(X,column1)
 arrange(Y,desc(column2))
 ```
+
+### Summarizing Data
+```
+head(cars)
+tail(cars)
+summary(cars)
+str(cars)
+quantile(cars$speed)
+table(cars$speed)
+sum(is.na(cars$speed))
+any(is.na(cars$speed))
+all(cars$speed > 0)
+colSums(cars)
+table(studens$group %in% c("A","B"))
+```
+
+Cross tabs
+```
+> xt <- xtabs(Freq ~ Gender + Admit,data=DF)
+> xt
+        Admit
+Gender   Admitted Rejected
+  Male       1198     1493
+  Female      557     1278
+```
